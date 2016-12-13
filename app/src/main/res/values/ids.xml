@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="id_drive"/>
+    <item type="id" name="id_bus"/>
+    <item type="id" name="id_walk"/>
+
+    <item type="id" name="id_view"/>
+    <item type="id" name="id_model"/>
+    <item type="id" name="id_controller"/>
+</resources>

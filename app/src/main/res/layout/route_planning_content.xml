@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.eshion.emap.RoutePlanningActivity"
+    tools:showIn="@layout/route_planning">
+
+    <LinearLayout
+        android:id="@+id/fromContext"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/from_str"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:id="@+id/fromTv"
+            android:background="#3F51B5" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/toContext"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fromContext"
+        android:layout_marginTop="2dp">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/to_str"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:id="@+id/toTv"
+            android:background="#3F51B5"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tripmodeContext"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toContext"
+        android:layout_marginTop="2dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/drive_str"
+            android:textColor="@android:color/white"
+            android:id="@+id/drive"
+            android:textSize="30sp"
+            android:background="#3F51B5"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bus_str"
+            android:textColor="@android:color/white"
+            android:id="@+id/bus"
+            android:textSize="30sp"
+            android:background="#3F51B5"
+            android:layout_marginLeft="2dp"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/walk_str"
+            android:textColor="@android:color/white"
+            android:id="@+id/walk"
+            android:textSize="30sp"
+            android:background="#3F51B5"
+            android:layout_marginLeft="2dp"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

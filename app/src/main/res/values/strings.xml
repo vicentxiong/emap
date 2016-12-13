@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">eshion-map</string>
+    <string name="action_settings">Settings</string>
+    <string name="route_planning_str">路线规划</string>
+    <string name="offline_map_str">离线地图</string>
+    <string name="stop_navi_str">停止导航</string>
+    <string name="start_navi_str">开始导航</string>
+    <string name="from_str">起点</string>
+    <string name="to_str">终点</string>
+    <string name="drive_str">驾车</string>
+    <string name="bus_str">公交</string>
+    <string name="walk_str">步行</string>
+    <string name="app_id">输入您讯飞的appid</string>
+    <string name="stopMapNavi_ornot_str">是否退出导航</string>
+    <string name="stop_str">退出</string>
+    <string name="cancel_str">取消</string>
+    <string name="current_city_str">当前城市</string>
+
+    <string name="offlinemap_completedownload_str">已下载</string>
+    <string name="offlinemap_notdownload_str">下载</string>
+    <string name="offlinemap_downloading_str">正在下载</string>
+    <string name="offlinemap_waitdownload_str">等候下载</string>
+    <string name="offlinemap_upzip_str">正在解压</string>
+    <string name="offlinemap_success_str">下载成功</string>
+    <string name="location_str">正在定位...</string>
+
+</resources>
