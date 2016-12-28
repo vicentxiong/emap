@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.geocoder.GeocodeAddress;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Created by eshion on 16-11-21.
  */
-public class RoutePlanningActivity extends AppCompatActivity implements View.OnClickListener, GeocodeSearch.OnGeocodeSearchListener, AdapterView.OnItemClickListener, PoiSearch.OnPoiSearchListener {
+public class RoutePlanningActivity extends AppCompatActivity implements View.OnClickListener, GeocodeSearch.OnGeocodeSearchListener, AdapterView.OnItemClickListener, PoiSearch.OnPoiSearchListener, MapApplication.MyLocationChangeListener {
     private AutoCompleteTextView mFrom,mTo;
     private Button mDrive,mBus,mWalk;
     private ArrayAdapter<String> addresses ;
@@ -83,6 +84,12 @@ public class RoutePlanningActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    @Override
+    public void dispatcherLocationChange(AMapLocation aMapLocation) {
+        fromPoint = new LatLonPoint(aMapLocation.getLatitude(),aMapLocation.getLongitude());
+        mFrom.setHint(aMapLocation.getAddress());
+    }
+
     enum FromOrTo{
         From,
         To
@@ -120,6 +127,9 @@ public class RoutePlanningActivity extends AppCompatActivity implements View.OnC
 
         mFrom.setOnItemClickListener(this);
         mTo.setOnItemClickListener(this);
+
+        application = (MapApplication) getApplication();
+        application.resgiterLocationChangeDispatcher(this);
     }
 
 
@@ -351,6 +361,7 @@ public class RoutePlanningActivity extends AppCompatActivity implements View.OnC
         Log.d("xx","onItemClick");
         switch (mState){
             case From:
+                application.resgiterLocationChangeDispatcher(null);
                 fromPoint = allPoiItem.get(position).getLatLonPoint();
 
                 break;

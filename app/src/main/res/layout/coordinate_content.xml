@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/coordinate_container"
+    tools:context="com.eshion.emap.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/longtitude_str"
+            android:id="@+id/longtitude"
+            android:background="#3F51B5"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:id="@+id/longtitude_content"
+            android:background="#3F51B5"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textColor="@android:color/white"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="@string/lattitude_str"
+            android:id="@+id/latitude"
+            android:background="#3F51B5"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:id="@+id/latitude_context"
+            android:background="#3F51B5"
+            android:layout_marginLeft="5dp"
+            android:textSize="25sp"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/coordinate_cancel_str"
+            android:id="@+id/coordinate_cancel"
+            android:background="#3F51B5"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/coordinate_ok_str"
+            android:id="@+id/coordinate_ok"
+            android:background="#3F51B5"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
+</LinearLayout>

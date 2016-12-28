@@ -15,7 +15,7 @@
     <string name="stop_str">退出</string>
     <string name="cancel_str">取消</string>
     <string name="current_city_str">当前城市</string>
-
+    <string name="no_result">对不起，没有搜索到相关数据！</string>
     <string name="offlinemap_completedownload_str">已下载</string>
     <string name="offlinemap_notdownload_str">下载</string>
     <string name="offlinemap_downloading_str">正在下载</string>
@@ -23,5 +23,9 @@
     <string name="offlinemap_upzip_str">正在解压</string>
     <string name="offlinemap_success_str">下载成功</string>
     <string name="location_str">正在定位...</string>
-
+    <string name="longtitude_str">经度：</string>
+    <string name="lattitude_str">纬度：</string>
+    <string name="coordinate_cancel_str">隐藏</string>
+    <string name="coordinate_ok_str">确定</string>
+    <string name="coordinate_str">坐标</string>
 </resources>

@@ -20,6 +20,10 @@ import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,16 +32,29 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.MapsInitializer;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.overlay.BusRouteOverlay;
 import com.amap.api.maps.overlay.DrivingRouteOverlay;
 import com.amap.api.maps.overlay.WalkRouteOverlay;
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviView;
 import com.amap.api.navi.AMapNaviViewListener;
+import com.amap.api.services.core.AMapException;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.nearby.NearbySearch;
+import com.amap.api.services.nearby.NearbySearchResult;
 import com.amap.api.services.route.BusPath;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DrivePath;
@@ -50,10 +67,14 @@ import com.amap.api.services.route.WalkRouteResult;
 import java.util.List;
 import java.util.jar.Manifest;
 
-public class MapActivity extends AppCompatActivity implements LocationSource, View.OnClickListener, RouteSearch.OnRouteSearchListener {
+public class MapActivity extends AppCompatActivity implements LocationSource, View.OnClickListener, RouteSearch.OnRouteSearchListener, NearbySearch.NearbyListener, GeocodeSearch.OnGeocodeSearchListener {
     private MapView mapView;
     private AMap mAamp;
+    private Marker regeoMarker;
 
+    private NearbySearch mNearBySearch;
+
+    private GeocodeSearch mGeocodeSearch;
 
     private UiSettings mUiSettings;
 
@@ -63,11 +84,17 @@ public class MapActivity extends AppCompatActivity implements LocationSource, Vi
 
     private Toolbar toolbar;
     private AppCompatButton appBtn;
-    private TextView mRoutePlanning ,mOffline;
+    private TextView mRoutePlanning ,mOffline,mCoordinate;
 
+    private LinearLayout mCoordinateRoot;
+    private RelativeLayout mMainContentRoot;
+    private Button mCoordinate_cancel,mCoordiante_ok;
+    private EditText mLongtitude,mLattitude;
     public static final int ROUTEPLANNING_INTENT = 10;
     public static final int MAPNAVI_INTENT = 100;
     private MapApplication application;
+
+    private LatLonPoint latLonPoint = new LatLonPoint(39.90865, 116.39751);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +114,19 @@ public class MapActivity extends AppCompatActivity implements LocationSource, Vi
         mapView = (MapView) findViewById(R.id.map);
         mRoutePlanning = (TextView) findViewById(R.id.routePlanning);
         mOffline = (TextView) findViewById(R.id.offline);
+        mCoordinate = (TextView) findViewById(R.id.coordinate);
+        mCoordiante_ok = (Button) findViewById(R.id.coordinate_ok);
+        mCoordinate_cancel = (Button) findViewById(R.id.coordinate_cancel);
         mRoutePlanning.setOnClickListener(this);
         mOffline.setOnClickListener(this);
+        mCoordinate.setOnClickListener(this);
+        mCoordiante_ok.setOnClickListener(this);
+        mCoordinate_cancel.setOnClickListener(this);
+
+        mCoordinateRoot = (LinearLayout) findViewById(R.id.coordinate_container);
+        mMainContentRoot = (RelativeLayout) findViewById(R.id.main_content);
+        mLongtitude = (EditText) findViewById(R.id.longtitude_content);
+        mLattitude = (EditText) findViewById(R.id.latitude_context);
 
         mapView.onCreate(savedInstanceState);
         mAamp = mapView.getMap();
@@ -100,11 +138,19 @@ public class MapActivity extends AppCompatActivity implements LocationSource, Vi
         mUiSettings.setMyLocationButtonEnabled(true); // 显示默认的定位按钮
         mAamp.setMyLocationEnabled(true);// 可触发定位并显示定位层
 
-
+        regeoMarker = mAamp.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
 
         mRouteSearch = new RouteSearch(this);
         mRouteSearch.setRouteSearchListener(this);
+
+        mNearBySearch = NearbySearch.getInstance(this);
+        mNearBySearch.addNearbyListener(this);
+
+        mGeocodeSearch = new GeocodeSearch(this);
+        mGeocodeSearch.setOnGeocodeSearchListener(this);
 
     }
 
@@ -203,8 +249,41 @@ public class MapActivity extends AppCompatActivity implements LocationSource, Vi
                 startActivity(offlineIntent);
 
                 break;
+            case R.id.coordinate:
+                mCoordinateRoot.bringToFront();
+                toolbar.setVisibility(View.GONE);
+
+                break;
+            case R.id.coordinate_ok:
+                /*Location location = mAamp.getMyLocation();
+                application.onCoordinateLocation(location);*/
+
+                /*NearbySearch.NearbyQuery nbQuery = new NearbySearch.NearbyQuery();
+                nbQuery.setCenterPoint(new LatLonPoint(36.459756,123.459658));
+                mNearBySearch.searchNearbyInfoAsyn(nbQuery);*/
+                String s_longtitude = mLongtitude.getText().toString();
+                String s_lattitude = mLattitude.getText().toString();
+                double d_longtitude = Double.valueOf(s_longtitude);
+                double d_lattitude = Double.valueOf(s_lattitude);
+                latLonPoint = new LatLonPoint(d_lattitude,d_longtitude);
+                getAddress(latLonPoint);
+                Log.d("xx","start geocode search");
+                break;
+            case R.id.coordinate_cancel:
+                mMainContentRoot.bringToFront();
+                toolbar.setVisibility(View.VISIBLE);
+                break;
         }
 
+    }
+
+    /**
+     * 响应逆地理编码
+     */
+    public void getAddress(final LatLonPoint latLonPoint) {
+        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200,
+                GeocodeSearch.AMAP);// 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+        mGeocodeSearch.getFromLocationAsyn(query);// 设置异步逆地理编码请求
     }
 
     private void mapNaviModeDialog(){
@@ -337,7 +416,55 @@ public class MapActivity extends AppCompatActivity implements LocationSource, Vi
 
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
-
+        Log.d("xx","onRideRouteSearched");
     }
+
+    @Override
+    public void onUserInfoCleared(int i) {
+        Log.d("xx","onUserInfoCleared");
+    }
+
+    @Override
+    public void onNearbyInfoSearched(NearbySearchResult nearbySearchResult, int i) {
+        Log.d("xx","onNearbyInfoSearched");
+    }
+
+    @Override
+    public void onNearbyInfoUploaded(int i) {
+        Log.d("xx","onNearbyInfoUploaded");
+    }
+
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+        Log.d("xx","onRegeocodeSearched  " + i);
+        if (i == AMapException.CODE_AMAP_SUCCESS) {
+            if (regeocodeResult != null && regeocodeResult.getRegeocodeAddress() != null
+                    && regeocodeResult.getRegeocodeAddress().getFormatAddress() != null) {
+                String addressName = regeocodeResult.getRegeocodeAddress().getFormatAddress()
+                        + "附近";
+                mAamp.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        convertToLatLng(latLonPoint), 15));
+                regeoMarker.setPosition(convertToLatLng(latLonPoint));
+                ToastUtil.show(MapActivity.this, addressName);
+            } else {
+                ToastUtil.show(MapActivity.this, R.string.no_result);
+            }
+        } else {
+            ToastUtil.showerror(this, i);
+        }
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+        Log.d("xx","onGeocodeSearched");
+    }
+
+    /**
+     * 把LatLonPoint对象转化为LatLon对象
+     */
+    public static LatLng convertToLatLng(LatLonPoint latLonPoint) {
+        return new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
+    }
+
 
 }

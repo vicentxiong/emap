@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.eshion.emap.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:id="@+id/main_content">
 
     <FrameLayout
         android:id="@+id/optionContainer"
@@ -36,6 +37,18 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/offline_map_str"
+                android:background="#3F51B5"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="2dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/coordinate"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/coordinate_str"
                 android:background="#3F51B5"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"

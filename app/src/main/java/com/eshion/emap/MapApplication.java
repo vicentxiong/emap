@@ -1,6 +1,7 @@
 package com.eshion.emap;
 
 import android.app.Application;
+import android.location.Location;
 import android.os.*;
 import android.os.Process;
 import android.util.Log;
@@ -69,10 +70,11 @@ public class MapApplication extends Application implements AMapLocationListener 
         if(aMapLocation.getErrorCode() == AMapLocation.LOCATION_SUCCESS){
             mLocationChangeedListener.onLocationChanged(aMapLocation);
             if(mDispatcher!=null) mDispatcher.dispatcherLocationChange(mLocation);
-           // Log.d("xx", "onLocationChanged = " + aMapLocation.getLatitude());
+            Log.d("xx", "onLocationChanged = " + aMapLocation.getAddress());
         }
 
     }
+
 
     public void addLocationChangedListener(LocationSource.OnLocationChangedListener l){
         mLocationChangeedListener = l;
